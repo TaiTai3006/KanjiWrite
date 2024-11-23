@@ -300,7 +300,7 @@ window.onbeforeprint = () => {
 
 // Bắt sự kiện đóng cửa sổ in
 window.onafterprint = () => {
-  kanji_tools.style.display = "block";
+  kanji_tools.style.display = "flex";
 };
 
 const title_input = document.getElementById("title-input");
