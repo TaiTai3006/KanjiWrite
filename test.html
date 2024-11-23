@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read Excel and Format Output</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        pre {
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <h1>Đọc và Xử lý File Excel</h1>
+
+    <input type="file" id="excel-file" />
+    <button onclick="processFile()">Xử lý File</button>
+
+    <pre id="output"></pre>
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <script>
+        function processFile() {
+            const fileInput = document.getElementById("excel-file");
+            const outputElement = document.getElementById("output");
+
+            if (fileInput.files.length === 0) {
+                outputElement.textContent = "Vui lòng chọn file Excel!";
+                return;
+            }
+
+            const file = fileInput.files[0];
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const data = event.target.result;
+                const workbook = XLSX.read(data, { type: "binary" });
+
+                // Chọn sheet đầu tiên
+                const sheetName = workbook.SheetNames[0];
+                const sheet = workbook.Sheets[sheetName];
+
+                // Chuyển dữ liệu sheet thành mảng JSON
+                const jsonData = XLSX.utils.sheet_to_json(sheet);
+
+                // Xử lý dữ liệu theo định dạng yêu cầu
+                const formattedData = jsonData.map(row => {
+                    return `${row.Kanji} (${row.Mean}) ${row.Example}`;
+                }).join("\n");
+
+                // Hiển thị kết quả
+                outputElement.textContent = formattedData;
+            };
+
+            reader.onerror = function(error) {
+                outputElement.textContent = "Đã xảy ra lỗi khi đọc file!";
+            };
+
+            reader.readAsBinaryString(file);
+        }
+    </script>
+</body>
+</html>

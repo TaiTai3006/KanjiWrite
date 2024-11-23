@@ -1,0 +1,178 @@
+svg path {
+    stroke: black;
+    fill: none;
+    stroke-width: 2;
+  }
+  #kanji-container {
+
+    background-color: #000;
+    width:100%;
+  }
+  textarea {
+    width: 60%;
+    height: 200px;
+    padding: 10px;
+  }
+
+  .kanji-box {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border: 1px solid black;
+    border-width: 1px 0.25px;
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+    color: #C0C0C0;
+  }
+
+  .kanji-box::before {
+    content: "";
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    top: 0;
+    left: 50%;
+    /* right: 50%; */
+    border-left: 0.005px dashed #D3D3D3;
+    z-index: -10;
+  }
+
+  .kanji-box::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    bottom: 50%;
+    /* top: 50%; */
+    border-bottom: 0.005px dashed #D3D3D3;
+    z-index: -10;
+  }
+
+  .a4-container{
+    display: flex; 
+    max-width: 650px; 
+    width: 100%; 
+    margin: 0 auto;
+    flex-direction: column;
+    gap: 10px;
+
+  }
+
+  .kanji-box-write{
+    display: grid;
+    grid-template-columns: repeat(12, 50px);
+    grid-template-rows: 50px;
+    row-gap: 5px;
+  }
+
+  .title svg{
+    width: 50px;
+    height: 50px;
+  }
+
+  .title{
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .title__right{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-top: 10px;
+    font-size: 12px;
+  }
+
+  .title__right  h3 h4{
+    margin: 0;
+    padding: 0;
+  }
+
+  .title__right h3{
+    font-size:14px;
+  }
+
+  .title-svg-list{
+    display: flex;
+    align-items: flex-end
+  }
+
+  .a4-header-background{
+ text-align: center;
+  margin-bottom: 30px
+}
+
+.kanji-tools__header{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.kanji-tools__button-top{
+  max-width: 60%;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  gap: 30px;
+}
+
+#kanji-tools{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.kanji-tools__button-bottom{
+  max-width: 60%;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  gap: 30px;
+}
+
+button{
+  padding: 5px 15px;
+  border: none;
+  border-radius: 2px;
+  color: white;
+}
+
+input{
+  height: 25px;
+  padding: 0 5px;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 5px 15px;
+  cursor: pointer;
+}
+
+#kanji-form{
+  background-color: #c1cf94;
+}
+#delete-input{
+  background-color: #e38c95;
+}
+
+#dowm-template-file, #print{
+  background-color: #cab4bb;
+}
+
+hr{
+  margin: 30px auto;
+}
+
+#kanji-tools{
+  margin-top: 30px;
+}
