@@ -8,13 +8,15 @@ kuroshiro
     console.error(error);
   });
 
+const loading_create = document.getElementById("loading-create");
+
 const number_of_boxes = document.getElementById("number-of-boxes");
 const number_of_blurred_letters = document.getElementById(
   "number-of-blurred-letters"
 );
 
-const a4_wirte =  document.getElementById("a4-wirte")
-console.log(a4_wirte)
+const a4_wirte = document.getElementById("a4-wirte");
+console.log(a4_wirte);
 
 number_of_boxes.addEventListener("input", function (event) {
   submitKanji(event);
@@ -27,7 +29,7 @@ number_of_blurred_letters.addEventListener("input", function (event) {
 
 async function handleKuroshiro(kanji, type) {
   try {
-    console.log(kanji);
+    // console.log(kanji);
     let kanji_reading;
     if (type === 1) {
       kanji_reading = await kuroshiro.convert(kanji, { to: "hiragana" });
@@ -37,7 +39,7 @@ async function handleKuroshiro(kanji, type) {
         to: "hiragana",
       });
     }
-    console.log(kanji_reading);
+    // console.log(kanji_reading);
     return kanji_reading;
   } catch (error) {
     console.error("Error:", error);
@@ -161,7 +163,7 @@ const submitKanji = async function (event) {
     arrKanji[i] = {
       kanji: kanji,
       reading: await handleKuroshiro(kanji, 1),
-      meaning: match && match[2] ? match[2]: "",
+      meaning: match && match[2] ? match[2] : "",
       example: await handleKuroshiro(
         arrKanji[i].split(" ")[arrKanji[i].split(" ").length - 1],
         2
@@ -171,9 +173,16 @@ const submitKanji = async function (event) {
         .map((data) => data.codePointAt(0).toString(16)),
     };
   }
-  console.log(arrKanji);
+  // console.log(arrKanji);
 
-  fetchKanji(arrKanji);
+  loading_create.textContent = "";
+  loading_create. classList.add("fui-loading-spinner");
+
+  await fetchKanji(arrKanji);
+
+  loading_create.textContent = "Create";
+  loading_create. classList.remove("fui-loading-spinner");
+  
 };
 
 const createunicode = function (list) {
@@ -296,11 +305,35 @@ document.getElementById("delete-input").addEventListener("click", deleteKanji);
 const kanji_tools = document.getElementById("kanji-tools");
 window.onbeforeprint = () => {
   kanji_tools.style.display = "none";
+
+  let children = a4_wirte.children;
+  console.log(children,"children");
+  const header_background = document.getElementById("a4-header-background");
+
+  let height_max = getBrowserHeightA4();
+  let height_sum = header_background.getBoundingClientRect().height + 10
+
+  for (let i = 0; i < children.length; i++) {
+    const childHeight = children[i].getBoundingClientRect().height 
+    height_sum += childHeight;
+    const childHeight_continue = children[i+1].getBoundingClientRect().height
+
+
+    if(height_sum + childHeight_continue>= height_max){
+      children[i].style.marginBottom = `${height_max - height_sum}px`
+      console.log("add space",children[i])
+      height_sum = 0;
+    }
+  }
 };
 
 // Bắt sự kiện đóng cửa sổ in
 window.onafterprint = () => {
   kanji_tools.style.display = "flex";
+  let children = a4_wirte.children;
+  for(chil of children){
+    chil.style.marginBottom = 0;
+  }
 };
 
 const title_input = document.getElementById("title-input");
@@ -309,3 +342,42 @@ const a4_title = document.getElementById("a4-title");
 title_input.addEventListener("input", () => {
   a4_title.textContent = title_input.value;
 });
+
+function getBrowserHeightA4() {
+  const userAgent = navigator.userAgent;
+
+  if (userAgent.includes("Chrome") && !userAgent.includes("Edg") && !userAgent.includes("OPR")) {
+      return 1040;
+  } else if (userAgent.includes("Safari") && !userAgent.includes("Chrome")) {
+      return 975;
+  } else if (userAgent.includes("Firefox")) {
+      return 0;
+  } else if (userAgent.includes("Edg")) {
+      return 0;
+  } else if (userAgent.includes("OPR") || userAgent.includes("Opera")) {
+      return 0;
+  } else {
+      return 0;
+  }
+}
+
+const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+        // Hiển thị nút khi cuộn xuống
+        window.onscroll = function () {
+            if (document.documentElement.scrollTop > 200) { // Khi cuộn hơn 200px
+                scrollToTopBtn.style.display = "block";
+            } else {
+                scrollToTopBtn.style.display = "none";
+            }
+        };
+
+        // Hàm cuộn lên đầu trang
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth" // Hiệu ứng mượt
+            });
+        }
+
+
