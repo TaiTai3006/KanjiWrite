@@ -8,7 +8,7 @@ svg path {
   width: 100%;
 }
 textarea {
- width: 100%;
+  width: 100%;
   height: 300px;
   padding: 10px;
 }
@@ -117,13 +117,14 @@ textarea {
   /* margin: 0 auto; */
   display: flex;
   gap: 30px;
+  flex-wrap: wrap;
 }
 
 #kanji-tools {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  max-width: 60%;
+  max-width: 70%;
   margin: 0 auto;
 }
 
@@ -133,6 +134,7 @@ textarea {
   /* margin: 0 auto; */
   display: flex;
   gap: 30px;
+  flex-wrap: wrap;
 }
 
 .kanji-warring {
@@ -229,19 +231,25 @@ hr {
   height: 20px;
   width: 20px;
   stroke: white;
- 
 }
 
-input[type='number']{
+input[type="number"] {
   width: 100px;
 }
 
-@media only screen and  (max-width: 1024px){
-  #kanji-tools{
+@media only screen and (max-width: 1024px) {
+  #kanji-tools {
     max-width: 90%;
   }
-  
- input[type='number']{
-  width: 70px;
- }
+
+  input[type="number"] {
+    width: 70px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .kanji-tools__header h1{
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
 }

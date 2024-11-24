@@ -9,13 +9,16 @@
     <script src="https://cdn.jsdelivr.net/npm/kuroshiro@1.1.2/dist/kuroshiro.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/kuroshiro-analyzer-kuromoji@1.1.0/dist/kuroshiro-analyzer-kuromoji.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="app">
       <div id="kanji-tools">
         <div class="kanji-tools__header">
           <h1>Create a file to practice writing kanji</h1>
-
           <textarea
             type="text"
             id="kanji-input"
@@ -44,12 +47,7 @@
         <div class="kanji-tools__button-bottom">
           <div>
             <label for="number-of-boxes">Number of boxes:</label>
-            <input
-              type="number"
-              id="number-of-boxes"
-              min="1"
-              value="3"
-            />
+            <input type="number" id="number-of-boxes" min="1" value="3" />
           </div>
           <div>
             <label for="number-of-blurred-letters"
@@ -88,9 +86,20 @@
         <div id="a4-wirte"></div>
       </div>
       <button id="scrollToTopBtn" onclick="scrollToTop()">
-        <svg viewBox="0 0 9 17" fill="none" aria-hidden="true" focusable="false" class="icon icon-arrow">
-          <path d="M1 15.5L8 8.5L0.999999 1.5" stroke="white" stroke-width="1.6" stroke-linejoin="round"></path>
-      </svg>      
+        <svg
+          viewBox="0 0 9 17"
+          fill="none"
+          aria-hidden="true"
+          focusable="false"
+          class="icon icon-arrow"
+        >
+          <path
+            d="M1 15.5L8 8.5L0.999999 1.5"
+            stroke="white"
+            stroke-width="1.6"
+            stroke-linejoin="round"
+          ></path>
+        </svg>
       </button>
     </div>
   </body>
