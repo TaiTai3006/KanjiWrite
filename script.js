@@ -19,13 +19,11 @@ const a4_wirte = document.getElementById("a4-wirte");
 console.log(a4_wirte);
 
 number_of_boxes.addEventListener("input", function (event) {
-  submitKanji(event);
+  // submitKanji(event);
   number_of_blurred_letters.max = number_of_boxes.value;
 });
 
-number_of_blurred_letters.addEventListener("input", function (event) {
-  submitKanji(event);
-});
+
 
 async function handleKuroshiro(kanji, type) {
   try {
