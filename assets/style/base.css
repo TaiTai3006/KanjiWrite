@@ -1,0 +1,23 @@
+@font-face {
+  font-family: "UD Digi Kyokasho";
+  src: url("/assets/fonts/ud-digi-kyokasho-n-r.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "R0";
+  src: url('/assets/fonts/R0/r0c0i - Linotte Regular.ttf') format('truetype'),
+       url('/assets/fonts/R0/r0c0i - Linotte Bold.ttf') format('truetype'),
+       url('/assets/fonts/R0/r0c0i - Linotte Heavy.ttf') format('truetype'),
+       url('/assets/fonts/R0/r0c0i - Linotte Light.ttf') format('truetype'),
+       url('/assets/fonts/R0/r0c0i - Linotte Semi Bold.ttf') format('truetype');
+}
+
+body {
+  font-family: "UD Digi Kyokasho", sans-serif;
+}
+
+
+
+
