@@ -23,8 +23,6 @@ number_of_boxes.addEventListener("input", function (event) {
   number_of_blurred_letters.max = number_of_boxes.value;
 });
 
-
-
 async function handleKuroshiro(kanji, type) {
   try {
     // console.log(kanji);
@@ -155,17 +153,20 @@ const submitKanji = async function (event) {
 
   let arrKanji = kanjiInput.split("\n");
 
+  
+
   for (let i = 0; i < arrKanji.length; i++) {
     const kanji = arrKanji[i].split(" ")[0];
     const match = arrKanji[i].match(/^(\S+)\s*\((.*?)\)\s*(.*)$/);
+
     arrKanji[i] = {
       kanji: kanji,
       reading: await handleKuroshiro(kanji, 1),
       meaning: match && match[2] ? match[2] : "",
-      example: await handleKuroshiro(
+      example: !arrKanji[i].split(" ")[arrKanji[i].split(" ").length - 1].includes(")") ? await handleKuroshiro(
         arrKanji[i].split(" ")[arrKanji[i].split(" ").length - 1],
         2
-      ),
+      ): "",
       unicodeList: kanji
         .split("")
         .map((data) => data.codePointAt(0).toString(16)),
@@ -381,3 +382,34 @@ function scrollToTop() {
   });
 }
 
+const font_size_box_select = document.getElementById("font-size-box");
+const styleSheets = document.styleSheets;
+
+font_size_box_select.addEventListener("change", function () {
+  let font_size = this.value;
+
+  if (font_size === "small") {
+    font_size = 25 + "px";
+  } else if (font_size === "medium") {
+    font_size = 30 + "px";
+  } else {
+    font_size = 35 + "px";
+  }
+
+  const style = document.createElement("style");
+  style.textContent = `.kanji-box { font-size: ${font_size}; }`; // Sử dụng !important để ghi đè
+  document.head.appendChild(style);
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+  // Fetch the IP address from the API
+  fetch("https://api.ipify.org?format=json")
+      .then(response => response.json())
+      .then(data => {
+          // Display the IP address on the screen
+         console.log(data.ip);
+      })
+      .catch(error => {
+          console.error("Error fetching IP address:", error);
+      });
+});

@@ -273,3 +273,16 @@ textarea{
 #a4-title{
   font-family: "R0", sans-serif;
 }
+
+.kanji-tools__button-bottom-font-size{
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.kanji-tools__button-bottom-font-size select{
+  width: 100px;
+  height: 25px;
+}

@@ -6,8 +6,8 @@
     <title>KanjiWrite by Tai Tai</title>
     <link rel="stylesheet" href="/assets/style/reset.css" />
     <link rel="stylesheet" href="/assets/style/styles.css" />
-    <link rel="stylesheet" href="/assets/style/base.css">
-    <link rel="icon" href="/assets/img/Logo.png" >
+    <link rel="stylesheet" href="/assets/style/base.css" />
+    <link rel="icon" href="/assets/img/Logo.png" />
     <script src="https://cdn.jsdelivr.net/npm/kuroshiro@1.1.2/dist/kuroshiro.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/kuroshiro-analyzer-kuromoji@1.1.0/dist/kuroshiro-analyzer-kuromoji.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
@@ -71,6 +71,20 @@
               placeholder="Input your title."
             />
           </div>
+          <div class="kanji-tools__button-bottom-font-size">
+            <div>
+              <label style="font-size: large">Font size:</label>
+              <select id="font-size-box">
+                <option value="small">Small</option>
+                <option value="medium" selected>Medium</option>
+                <option value="large">Large</option>
+              </select>
+            </div>
+            <div style="display: flex">
+              <div class="kanji-box">日</div>
+              <div class="kanji-box">本</div>
+            </div>
+          </div>
         </div>
         <div class="kanji-warring">
           <p>
@@ -104,6 +118,7 @@
         </svg>
       </button>
     </div>
+   
   </body>
   <script src="/assets/js/script.js"></script>
 </html>
