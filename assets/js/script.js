@@ -383,7 +383,7 @@ function scrollToTop() {
 }
 
 const font_size_box_select = document.getElementById("font-size-box");
-const styleSheets = document.styleSheets;
+const style = document.createElement("style");
 
 font_size_box_select.addEventListener("change", function () {
   let font_size = this.value;
@@ -396,7 +396,6 @@ font_size_box_select.addEventListener("change", function () {
     font_size = 35 + "px";
   }
 
-  const style = document.createElement("style");
   style.textContent = `.kanji-box { font-size: ${font_size}; }`; // Sử dụng !important để ghi đè
   document.head.appendChild(style);
 });
@@ -412,4 +411,15 @@ document.addEventListener("DOMContentLoaded", function() {
       .catch(error => {
           console.error("Error fetching IP address:", error);
       });
+});
+
+const toggle_input = document.getElementById("toggle-input");
+
+toggle_input.addEventListener("change", (event) => {
+  if (event.target.checked) {
+    style.textContent = `.title__right h3 { display: block; }`; 
+  } else {
+    style.textContent = `.title__right h3 { display: none; }`; 
+  }
+  document.head.appendChild(style);
 });

@@ -24,7 +24,7 @@ textarea {
   justify-content: center;
   align-items: center;
   font-weight: 400;
-  color: #c0c0c0;
+  color: #DDDDDD;
 }
 
 .kanji-box::before {
@@ -285,4 +285,39 @@ textarea{
 .kanji-tools__button-bottom-font-size select{
   width: 100px;
   height: 25px;
+}
+
+.fui-checkbox-toggle {
+  cursor: pointer;
+}
+.fui-checkbox-toggle .toggle-input {
+  display: none;
+}
+.fui-checkbox-toggle .toggle-input:checked + .toggle-bar {
+  background-color: #c1cf94;
+}
+.fui-checkbox-toggle .toggle-input:checked + .toggle-bar .toggle-spin {
+  transform: translateX(20px);
+}
+.fui-checkbox-toggle .toggle-bar {
+  width: 50px;
+  height: 30px;
+  background-color: #cbd5e1;
+  border-radius: 5rem;
+  padding: 5px;
+  transition: background-color 0.2s linear;
+}
+.fui-checkbox-toggle .toggle-spin {
+
+  width: 20px;
+  height: 20px;
+  border-radius: 100rem;
+  background-color: #fff;
+  transition: transform 0.2s linear;
+}
+
+.transcription-box{
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
