@@ -350,7 +350,7 @@ function getBrowserHeightA4() {
   ) {
     return 1040;
   } else if (userAgent.includes("Safari") && !userAgent.includes("Chrome")) {
-    return 980; //975
+    return 978; //975
   } else if (userAgent.includes("Firefox")) {
     return 0;
   } else if (userAgent.includes("Edg")) {
