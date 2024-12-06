@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Spell Checker</title>
+  <style>
+    .editor {
+      width: 100%;
+      height: 150px;
+      font-size: 16px;
+      line-height: 1.5;
+      padding: 10px;
+      border: 1px solid #ccc;
+      white-space: pre-wrap; /* Giữ lại khoảng trắng */
+      word-wrap: break-word;
+      overflow: auto;
+    }
+
+    .highlight {
+      color: red;
+      font-weight: bold;
+    }
+
+  </style>
+</head>
+<body>
+  <h1>Custom Spell Checker</h1>
+  <div id="editor" class="editor" contenteditable="true" placeholder="Nhập văn bản để kiểm tra..."></div>
+  <div id="result-container"></div>
+
+  <script>
+    // Danh sách từ đúng
+    const dictionary = ["hello", "world", "example", "custom", "spell", "check"];
+
+    const editor = document.getElementById("editor");
+    const resultContainer = document.getElementById("result-container");
+
+    editor.addEventListener("input", () => {
+      const text = editor.textContent.trim(); // Lấy nội dung văn bản
+
+      // Tách văn bản thành từ
+      const words = text.split(/\s+/); 
+
+      const errors = [];
+      const sanitizedWords = [];
+
+      // Kiểm tra từng từ và lưu các từ có lỗi
+      words.forEach((word) => {
+        if (word && !dictionary.includes(word.toLowerCase())) {
+          errors.push(word);
+          sanitizedWords.push(`<span class="highlight">${word}</span>`);  // Tô đỏ từ lỗi
+        } else {
+          sanitizedWords.push(word);  // Không làm gì với từ đúng
+        }
+      });
+
+      // Hiển thị kết quả
+      renderResults(errors);
+
+      // Chỉnh sửa lại nội dung của editor, tô đỏ các từ lỗi
+      editor.innerHTML = sanitizedWords.join(" ");
+    });
+
+    function renderResults(errors) {
+      if (errors.length === 0) {
+        resultContainer.innerHTML = "<p>Không có lỗi chính tả!</p>";
+        return;
+      }
+
+      const errorWordsHTML = errors
+        .map((word) => `<span class="error-word">${word}</span>`)
+        .join(", ");
+
+      resultContainer.innerHTML = `<p>Từ không đúng: ${errorWordsHTML}</p>`;
+    }
+  </script>
+</body>
+</html>
