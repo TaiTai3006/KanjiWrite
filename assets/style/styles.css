@@ -179,7 +179,7 @@ input[type="file"] {
 }
 
 #dowm-template-file,
-#print {
+#print, #copy-quizlet {
   background-color: #cab4bb;
 }
 

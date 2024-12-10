@@ -423,3 +423,44 @@ toggle_input.addEventListener("change", (event) => {
   }
   document.head.appendChild(style);
 });
+
+const processText = (input) => {
+  // Tách các dòng
+  const lines = input.split("\n");
+
+  const processedLines = lines.map(line => {
+    // Tách các từ dựa trên dấu cách
+    const words = line.split(" ");
+
+    // Nếu dòng có ít nhất một từ (Kanji) và không phải dòng trống
+    if (words.length > 0) {
+      words.splice(1, 0, ","); // Thêm dấu phẩy sau từ Kanji đầu tiên
+    }
+
+    // Ghép lại các từ thành một chuỗi
+    return words.join(" ");
+  });
+
+  // Kết hợp lại thành chuỗi kết quả
+  return processedLines.join("\n");
+};
+
+
+
+const handleCopyForQuizlet = () =>{
+  let kanjiInput = document.getElementById("kanji-input").value;
+  if (kanjiInput.length === 0) {
+    return;
+  }
+
+  const tempTextArea = document.createElement("textarea");
+  tempTextArea.value = processText(kanjiInput);
+  document.body.appendChild(tempTextArea);
+  tempTextArea.select();
+  document.execCommand("copy");
+  document.body.removeChild(tempTextArea);
+
+  alert("Copied to clipboard for Quizlet!");
+
+
+}
