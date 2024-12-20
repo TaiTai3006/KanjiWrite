@@ -69,12 +69,16 @@ function readFileExcel() {
     // Xử lý dữ liệu theo định dạng yêu cầu
     const formattedData = jsonData
       .map((row) => {
-        return `${row.Kanji} (${row.Mean}) ${row.Example}`;
+        return `${row.Kanji} (${row.Mean ? row.Mean : ""}) ${
+          row.Example ? row.Example : ""
+        }`;
       })
       .join("\n");
 
     // Hiển thị kết quả
     document.getElementById("kanji-input").value = formattedData;
+    sessionStorage.setItem("kanji-input-backup", formattedData);
+    handle_check_textarea()
   };
 
   reader.onerror = function (error) {
@@ -140,6 +144,11 @@ function checkAndProcessString(input) {
   }
 }
 
+const kanji_warring_div = document.getElementsByClassName("kanji-warring")[0]
+const kanji_tools__button_bottom_div = document.getElementsByClassName("kanji-tools__button-bottom")[0];
+const kanji_tools__button_top_div = document.getElementsByClassName("kanji-tools__button-top")[0];
+const loading_kanji_preview_div = document.getElementsByClassName("loading-kanji-preview")[0];
+
 const submitKanji = async function (event) {
   event.preventDefault(); // Ngăn form tải lại trang
   deleteKanji();
@@ -151,9 +160,13 @@ const submitKanji = async function (event) {
     return;
   }
 
-  let arrKanji = kanjiInput.split("\n");
+  kanji_warring_div.classList.add("none")
+  kanji_tools__button_bottom_div.classList.add("none")
+  kanji_tools__button_top_div.classList.add("none")
+  loading_kanji_preview_div.classList.remove("none")
 
-  
+
+  let arrKanji = kanjiInput.split("\n");
 
   for (let i = 0; i < arrKanji.length; i++) {
     const kanji = arrKanji[i].split(" ")[0];
@@ -163,10 +176,14 @@ const submitKanji = async function (event) {
       kanji: kanji,
       reading: await handleKuroshiro(kanji, 1),
       meaning: match && match[2] ? match[2] : "",
-      example: !arrKanji[i].split(" ")[arrKanji[i].split(" ").length - 1].includes(")") ? await handleKuroshiro(
-        arrKanji[i].split(" ")[arrKanji[i].split(" ").length - 1],
-        2
-      ): "",
+      example: !arrKanji[i]
+        .split(" ")
+        [arrKanji[i].split(" ").length - 1].includes(")")
+        ? await handleKuroshiro(
+            arrKanji[i].split(" ")[arrKanji[i].split(" ").length - 1],
+            2
+          )
+        : "",
       unicodeList: kanji
         .split("")
         .map((data) => data.codePointAt(0).toString(16)),
@@ -174,13 +191,15 @@ const submitKanji = async function (event) {
   }
   // console.log(arrKanji);
 
-  loading_create.textContent = "";
-  loading_create.classList.add("fui-loading-spinner");
+  // loading_create.textContent = "";
+  // loading_create.classList.add("fui-loading-spinner");
 
   await fetchKanji(arrKanji);
 
-  loading_create.textContent = "Create";
-  loading_create.classList.remove("fui-loading-spinner");
+  kanji_warring_div.classList.remove("none")
+  kanji_tools__button_bottom_div.classList.remove("none")
+  kanji_tools__button_top_div.classList.remove("none")
+  loading_kanji_preview_div.classList.add("none")
 };
 
 const createunicode = function (list) {
@@ -195,10 +214,16 @@ function cleanSVG(svgString) {
   return cleanedSVG ? cleanedSVG[0] : "";
 }
 
+let isRunning = false;
+
 const fetchKanji = async function (svgUrl_list) {
   try {
+    isRunning = true;
     // console.log(svgUrl_list);
     for (let index = 0; index < svgUrl_list.length; index++) {
+      if(!isRunning) return
+
+      
       const div_kanji_box_container = document.createElement("div");
       div_kanji_box_container.classList.add("kanji-box-container");
       a4_wirte.appendChild(div_kanji_box_container);
@@ -284,11 +309,16 @@ const fetchKanji = async function (svgUrl_list) {
       //   }
       // }
       // animateStroke(); // Bắt đầu hiệu ứng
+    
     }
   } catch (error) {
     console.error("Error loading Kanji SVG:", error);
-    document.getElementById("result").textContent =
-      "Không tìm thấy SVG cho chữ Kanji này!";
+    kanji_warring_div.classList.remove("none")
+    kanji_tools__button_bottom_div.classList.remove("none")
+    kanji_tools__button_top_div.classList.remove("none")
+    loading_kanji_preview_div.classList.add("none")
+    deleteKanji()
+    alert("Error loading Kanji SVG: ", error);
   }
 };
 
@@ -400,26 +430,15 @@ font_size_box_select.addEventListener("change", function () {
   document.head.appendChild(style);
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-  // Fetch the IP address from the API
-  fetch("https://api.ipify.org?format=json")
-      .then(response => response.json())
-      .then(data => {
-          // Display the IP address on the screen
-         console.log(data.ip);
-      })
-      .catch(error => {
-          console.error("Error fetching IP address:", error);
-      });
-});
+
 
 const toggle_input = document.getElementById("toggle-input");
 
 toggle_input.addEventListener("change", (event) => {
   if (event.target.checked) {
-    style.textContent = `.title__right h3 { display: block; }`; 
+    style.textContent = `.title__right h3 { display: block; }`;
   } else {
-    style.textContent = `.title__right h3 { display: none; }`; 
+    style.textContent = `.title__right h3 { display: none; }`;
   }
   document.head.appendChild(style);
 });
@@ -428,7 +447,7 @@ const processText = (input) => {
   // Tách các dòng
   const lines = input.split("\n");
 
-  const processedLines = lines.map(line => {
+  const processedLines = lines.map((line) => {
     // Tách các từ dựa trên dấu cách
     const words = line.split(" ");
 
@@ -445,9 +464,7 @@ const processText = (input) => {
   return processedLines.join("\n");
 };
 
-
-
-const handleCopyForQuizlet = () =>{
+const handleCopyForQuizlet = () => {
   let kanjiInput = document.getElementById("kanji-input").value;
   if (kanjiInput.length === 0) {
     return;
@@ -461,6 +478,95 @@ const handleCopyForQuizlet = () =>{
   document.body.removeChild(tempTextArea);
 
   alert("Copied to clipboard for Quizlet!");
+};
 
+// Tạo các sao lưu cho setting và backup dữ liệu khi reload
 
+let setting = {
+  number_box: 3,
+  number_of_blurred_letters: 1,
+  font_size: "medium",
+  transcription: true,
+};
+
+window.addEventListener("load", function () {
+  const savedSetting = JSON.parse(localStorage.getItem("setting"));
+  const saveKanjiBackup = sessionStorage.getItem("kanji-input-backup");
+
+  if (savedSetting) {
+    setting = savedSetting;
+  }
+
+  if (saveKanjiBackup) {
+    document.getElementById("kanji-input").value = saveKanjiBackup;
+  }
+
+  number_of_boxes.value = setting.number_box;
+  number_of_blurred_letters.value = setting.number_of_blurred_letters;
+  font_size_box_select.value = setting.font_size;
+  toggle_input.checked = setting.transcription;
+
+  handle_check_textarea()
+});
+
+const handle_setting_change = (event) => {
+  const { name, type, checked, value } = event.target;
+
+  const inputValue = type === "checkbox" ? checked : value;
+
+  setting = { ...setting, [name]: inputValue };
+
+  localStorage.setItem("setting", JSON.stringify(setting));
+  
+};
+
+const handle_input_kanji_change = () => {
+  sessionStorage.setItem(
+    "kanji-input-backup",
+    document.getElementById("kanji-input").value
+  );
+  handle_check_textarea()
+};
+
+//chức năng xoá cho textarea
+const icon_delete_header = document.getElementsByClassName("icon-delete")[0];
+
+const handle_check_textarea = () => {
+  document.getElementById("kanji-input").value
+  ? icon_delete_header.classList.remove("none")
+  : icon_delete_header.classList.add("none");
 }
+
+const handle_delete_textarea = () => {
+  document.getElementById("kanji-input").value = "";
+  icon_delete_header.classList.add("none");
+}
+
+const hanlde_cancel_loading = () => {
+  isRunning = false;
+  deleteKanji();
+  kanji_warring_div.classList.remove("none")
+  kanji_tools__button_bottom_div.classList.remove("none")
+  kanji_tools__button_top_div.classList.remove("none")
+  loading_kanji_preview_div.classList.add("none")
+}
+
+document.addEventListener("DOMContentLoaded", async function () {
+  // Fetch the IP address from the API
+  try {
+    const response = await fetch("https://api.ipify.org?format=json");
+    const data = await response.json();
+
+    console.log(data.ip);
+
+    try {
+      const axiosResponse = await axios.post(`https://kanji-write-server.vercel.app/add-user?ip=${data.ip}`);
+      console.log("Response from server:", axiosResponse.data);
+    } catch (error) {
+      console.error("Error posting to server:", error.response?.data || error.message);
+    }
+  } catch (error) {
+    console.error("Error fetching IP address:", error);
+  }
+});
+

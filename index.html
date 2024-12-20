@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/assets/style/reset.css" />
     <link rel="stylesheet" href="/assets/style/styles.css" />
     <link rel="stylesheet" href="/assets/style/base.css" />
-    <link rel="icon" href="/assets/img/Logo.png" />
+    <link rel="icon" href="/assets/img/logo.png" />
     <script src="https://cdn.jsdelivr.net/npm/kuroshiro@1.1.2/dist/kuroshiro.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/kuroshiro-analyzer-kuromoji@1.1.0/dist/kuroshiro-analyzer-kuromoji.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
@@ -15,20 +15,28 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       rel="stylesheet"
     />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
   <body>
     <div class="app">
       <div id="kanji-tools">
         <div class="kanji-tools__header">
-          <h1>Create a file to practice writing kanji</h1>
-          <textarea
-            type="text"
-            id="kanji-input"
-            placeholder="Kanji (Mean) Example
+          <h1>Create Kanji Practice File</h1>
+          <div class="kanji-tools__header__kanjiinput__content">
+            <textarea
+              type="text"
+              id="kanji-input"
+              oninput="handle_input_kanji_change()"
+              placeholder="Kanji (Mean) Example
 日本 (Nhật Bản) 日本がきれいです。
 日本語 (Tiếng Nhật) 日本語が上手です。"
-            required
-          ></textarea>
+              required
+            ></textarea>
+            <div class="icon-delete" onclick="handle_delete_textarea()">
+              <i class="fa-solid fa-xmark fa-xl"></i>
+            </div>
+            
+          </div>
         </div>
         <div class="kanji-tools__button-top">
           <button id="kanji-form" type="submit">
@@ -44,20 +52,31 @@
             Download the Excel sample file
           </button>
           <button id="print">Print</button>
-          <button id="copy-quizlet" onclick="handleCopyForQuizlet()">Copy for Quizlet</button>
+          <button id="copy-quizlet" onclick="handleCopyForQuizlet()">
+            Copy for Quizlet
+          </button>
         </div>
 
         <div class="kanji-tools__button-bottom">
           <div>
             <label for="number-of-boxes">Number of boxes:</label>
-            <input type="number" id="number-of-boxes" min="1" value="3" />
+            <input
+              name="number_box"
+              onchange="handle_setting_change(event)"
+              type="number"
+              id="number-of-boxes"
+              min="1"
+              value="3"
+            />
           </div>
           <div>
             <label for="number-of-blurred-letters"
               >Number of blurred letters:</label
             >
             <input
+              name="number_of_blurred_letters"
               type="number"
+              onchange="handle_setting_change(event)"
               id="number-of-blurred-letters"
               min="1"
               max="3"
@@ -75,7 +94,11 @@
           <div class="kanji-tools__button-bottom-font-size">
             <div>
               <label>Font size:</label>
-              <select id="font-size-box">
+              <select
+                onchange="handle_setting_change(event)"
+                name="font_size"
+                id="font-size-box"
+              >
                 <option value="small">Small</option>
                 <option value="medium" selected>Medium</option>
                 <option value="large">Large</option>
@@ -89,7 +112,13 @@
           <div class="transcription-box">
             <label>Transcription:</label>
             <label class="fui-checkbox-toggle">
-              <input type="checkbox" id="toggle-input" class="toggle-input" checked />
+              <input
+                onchange="handle_setting_change(event)"
+                name="transcription"
+                type="checkbox"
+                id="toggle-input"
+                class="toggle-input"
+              />
               <div class="toggle-bar">
                 <div class="toggle-spin"></div>
               </div>
@@ -102,6 +131,11 @@
             Chrom và Safari.
           </p>
         </div>
+          <div class="loading-kanji-preview none">
+            <div class="fui-loading-spinner"></div>
+            <button onclick="hanlde_cancel_loading()"><i class="fa-solid fa-xmark fa-xm"></i> Cancel</button>
+          </div>
+        
         <hr width="100%" size="1px" align="center" color="#909090" />
       </div>
 
