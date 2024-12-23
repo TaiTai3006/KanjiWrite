@@ -176,7 +176,7 @@ const submitKanji = async function (event) {
       kanji: kanji,
       reading: await handleKuroshiro(kanji, 1),
       meaning: match && match[2] ? match[2] : "",
-      example: !arrKanji[i]
+      example: arrKanji[i].split(" ").length !== 1 && !arrKanji[i]
         .split(" ")
         [arrKanji[i].split(" ").length - 1].includes(")")
         ? await handleKuroshiro(
@@ -416,7 +416,11 @@ const font_size_box_select = document.getElementById("font-size-box");
 const style = document.createElement("style");
 
 font_size_box_select.addEventListener("change", function () {
-  let font_size = this.value;
+  setFontSize()
+});
+
+const setFontSize = ()=>{
+  let font_size = font_size_box_select.value;
 
   if (font_size === "small") {
     font_size = 25 + "px";
@@ -428,7 +432,7 @@ font_size_box_select.addEventListener("change", function () {
 
   style.textContent = `.kanji-box { font-size: ${font_size}; }`; // Sử dụng !important để ghi đè
   document.head.appendChild(style);
-});
+}
 
 
 
@@ -507,6 +511,7 @@ window.addEventListener("load", function () {
   toggle_input.checked = setting.transcription;
 
   handle_check_textarea()
+  setFontSize()
 });
 
 const handle_setting_change = (event) => {
@@ -557,10 +562,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     const response = await fetch("https://api.ipify.org?format=json");
     const data = await response.json();
 
+    const res1 = await fetch("https://api.db-ip.com/v2/free/self");
+    const data1 = await res1.json();
+
+    console.log(data1.city);
+
     console.log(data.ip);
 
     try {
-      const axiosResponse = await axios.post(`https://kanji-write-server.vercel.app/add-user?ip=${data.ip}`);
+      const axiosResponse = await axios.post(`https://kanji-write-server.vercel.app/add-user?ip=${data.ip}&city=${data1.city}`);
       console.log("Response from server:", axiosResponse.data);
     } catch (error) {
       console.error("Error posting to server:", error.response?.data || error.message);
