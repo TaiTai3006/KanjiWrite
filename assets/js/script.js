@@ -413,7 +413,8 @@ function scrollToTop() {
 }
 
 const font_size_box_select = document.getElementById("font-size-box");
-const style = document.createElement("style");
+const style_fontsize = document.createElement("style");
+const style_transcription = document.createElement("style");
 
 font_size_box_select.addEventListener("change", function () {
   setFontSize()
@@ -421,7 +422,7 @@ font_size_box_select.addEventListener("change", function () {
 
 const setFontSize = ()=>{
   let font_size = font_size_box_select.value;
-
+  console.log(font_size)
   if (font_size === "small") {
     font_size = 25 + "px";
   } else if (font_size === "medium") {
@@ -429,23 +430,27 @@ const setFontSize = ()=>{
   } else {
     font_size = 35 + "px";
   }
-
-  style.textContent = `.kanji-box { font-size: ${font_size}; }`; // Sử dụng !important để ghi đè
-  document.head.appendChild(style);
+  console.log(font_size)
+  style_fontsize.textContent = `.kanji-box { font-size: ${font_size}; }`;
+  document.head.appendChild(style_fontsize);
 }
 
 
 
 const toggle_input = document.getElementById("toggle-input");
 
-toggle_input.addEventListener("change", (event) => {
-  if (event.target.checked) {
-    style.textContent = `.title__right h3 { display: block; }`;
-  } else {
-    style.textContent = `.title__right h3 { display: none; }`;
-  }
-  document.head.appendChild(style);
+toggle_input.addEventListener("change", () => {
+  setTranscription()
 });
+
+const setTranscription = () =>{
+  if (toggle_input.checked) {
+    style_transcription.textContent = `.title__right h3 { display: block; }`;
+  } else {
+    style_transcription.textContent = `.title__right h3 { display: none; }`;
+  }
+  document.head.appendChild(style_transcription);
+}
 
 const processText = (input) => {
   // Tách các dòng
@@ -512,6 +517,7 @@ window.addEventListener("load", function () {
 
   handle_check_textarea()
   setFontSize()
+  setTranscription()
 });
 
 const handle_setting_change = (event) => {
@@ -565,7 +571,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const res1 = await fetch("https://api.db-ip.com/v2/free/self");
     const data1 = await res1.json();
 
-    console.log(data1.city);
+    console.log(data1);
 
     console.log(data.ip);
 
